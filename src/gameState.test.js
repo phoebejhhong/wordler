@@ -1,11 +1,10 @@
-import { appendTile, deleteTile, revealTiles } from './gameState';
+import { getInitialState, appendTile, deleteTile, revealTiles } from './gameState';
 
 describe('gameState', () => {
   describe('appendTile', () => {
     it('appends tile', () => {
       const state = {
-        solution: '',
-        keys: {},
+        ...getInitialState(''),
         tiles: [
           { revealed: true, letters: [
             { letter: 'a', state: 'absent'},
@@ -31,8 +30,7 @@ describe('gameState', () => {
         ],
       };
       const stateAfter = {
-        solution: '',
-        keys: {},
+        ...getInitialState(''),
         tiles: [
           { revealed: true, letters: [
             { letter: 'a', state: 'absent'},
@@ -62,8 +60,7 @@ describe('gameState', () => {
     });
     it('does not append if full', () => {
       const state = {
-        solution: '',
-        keys: {},
+        ...getInitialState(''),
         tiles: [
          { revealed: false, letters: [
            { letter: 'a', state: 'absent'},
@@ -88,8 +85,7 @@ describe('gameState', () => {
   describe('deleteTile', () => {
     it('deletes last letter', () => {
       const state = {
-        solution: '',
-        keys: {},
+        ...getInitialState(''),
         tiles: [
          { revealed: true, letters: [
            { letter: 'a', state: 'absent'},
@@ -109,8 +105,7 @@ describe('gameState', () => {
       };
 
       const stateAfter = {
-        solution: '',
-        keys: {},
+        ...getInitialState(''),
         tiles: [
          { revealed: true, letters: [
            { letter: 'a', state: 'absent'},
@@ -141,9 +136,9 @@ describe('gameState', () => {
           { revealed: false, letters: [
             { letter: 'm', state: 'tbd'},
             { letter: 'a', state: 'tbd'},
+            { letter: 'g', state: 'tbd'},
             { letter: 'i', state: 'tbd'},
-            { letter: 'm', state: 'tbd'},
-            { letter: 's', state: 'tbd'},
+            { letter: 'c', state: 'tbd'},
           ]},
         ],
       };
@@ -153,22 +148,59 @@ describe('gameState', () => {
         keys: {
           m: 'present',
           a: 'present',
+          g: 'absent',
           i: 'absent',
-          m: 'correct',
-          s: 'absent',
+          c: 'absent',
         },
         tiles: [
           { revealed: true, letters: [
-            { letter: 'm', state: 'present'},// TODO: this should be absent
+            { letter: 'm', state: 'present'},
             { letter: 'a', state: 'present'},
+            { letter: 'g', state: 'absent'},
             { letter: 'i', state: 'absent'},
-            { letter: 'm', state: 'correct'},
-            { letter: 's', state: 'absent'},
+            { letter: 'c', state: 'absent'},
           ]},
         ],
       };
 
       expect(revealTiles(state)).toEqual(stateAfter);
     })
+  });
+  it('edge case with duplicate guess', () => {
+    const state = {
+      solution: 'frame',
+      keys: {},
+      tiles: [
+        { revealed: false, letters: [
+          { letter: 'm', state: 'tbd'},
+          { letter: 'a', state: 'tbd'},
+          { letter: 'i', state: 'tbd'},
+          { letter: 'm', state: 'tbd'},
+          { letter: 's', state: 'tbd'},
+        ]},
+      ],
+    };
+
+    const stateAfter = {
+      solution: 'frame',
+      keys: {
+        m: 'absent',
+        a: 'present',
+        i: 'absent',
+        m: 'correct',
+        s: 'absent',
+      },
+      tiles: [
+        { revealed: true, letters: [
+          { letter: 'm', state: 'absent'}, // absent because correct m exists
+          { letter: 'a', state: 'present'},
+          { letter: 'i', state: 'absent'},
+          { letter: 'm', state: 'correct'},
+          { letter: 's', state: 'absent'},
+        ]},
+      ],
+    };
+
+    expect(revealTiles(state)).toEqual(stateAfter);
   });
 });

@@ -1,8 +1,11 @@
 import { VALID_WORDS } from './validWords';
 
-// type State = 'tbd' | 'absent' | 'present' | 'correct';
+// type LetterState = 'tbd' | 'absent' | 'present' | 'correct';
+// type GameState = 'progress' | 'lost' | 'win';
+
 export const getInitialState = (solution) => ({
   solution,
+  state: 'progress',
   keys: {},
   tiles: [
     {
@@ -71,6 +74,7 @@ export const getInitialState = (solution) => ({
 const copyState = (gameState) => {
   return {
     solution: gameState.solution,
+    state: gameState.state,
     keys: { ...gameState.keys },
     tiles: gameState.tiles.map(tile => {
       return {
@@ -84,6 +88,9 @@ const copyState = (gameState) => {
 }
 
 export const appendTile = (gameState, letter) => {
+  if (gameState.state !== 'progress') {
+    return gameState;
+  }
   const copy = copyState(gameState);
   const currentRow = copy.tiles.find(tile => tile.revealed === false);
   if (!currentRow) {
@@ -99,6 +106,9 @@ export const appendTile = (gameState, letter) => {
 }
 
 export const deleteTile = (gameState) => {
+  if (gameState.state !== 'progress') {
+    return gameState;
+  }
   const copy = copyState(gameState);
   const currentRow = copy.tiles.find(tile => tile.revealed === false);
   if (!currentRow) {
@@ -119,29 +129,72 @@ export const deleteTile = (gameState) => {
   return copy;
 }
 
+const evaluate = (guessArray, solutionArray) => {
+  const solutionLetterTaken = solutionArray.map(() => false);
+  const guessEvaluations = solutionArray.map(() => 'tbd');
+
+  // handle correct guesses first
+  guessArray.forEach((guessLetter, i) => {
+    if (guessLetter === solutionArray[i]) {
+      guessEvaluations[i] = 'correct';
+      solutionLetterTaken[i] = true;
+    }
+  });
+  guessArray.forEach((guessLetter, i) => {
+    if (guessEvaluations[i] === 'correct') {
+      return;
+    }
+    if (!solutionArray.includes(guessLetter)) {
+      guessEvaluations[i] = 'absent';
+      return;
+    }
+
+    const indexOfPresentLetter = solutionArray.findIndex((solutionLetter, i) => {
+      return solutionLetter === guessLetter && !solutionLetterTaken[i];
+    });
+
+    if (indexOfPresentLetter > -1) {
+      guessEvaluations[i] = 'present';
+      solutionLetterTaken[indexOfPresentLetter] = true;
+      return;
+    }
+    guessEvaluations[i] = 'absent'
+  });
+
+  return guessEvaluations;
+}
+
 export const revealTiles = (gameState) => {
+  if (gameState.state !== 'progress') {
+    return gameState;
+  }
   const copy = copyState(gameState);
   const currentRow = copy.tiles.find(tile => tile.revealed === false);
   if (!currentRow || !!currentRow.letters.find(letter => letter.letter === '')) {
     return gameState;
   }
-  if (VALID_WORDS.indexOf(currentRow.letters.map(letter => letter.letter).join('')) === -1) {
+  const guessArray = currentRow.letters.map(letter => letter.letter);
+  if (VALID_WORDS.indexOf(guessArray.join('')) === -1) {
     throw new Error('invalid word');
   }
+  const guessEvaluations = evaluate(guessArray, copy.solution.split(''));
   currentRow.revealed = true;
-  currentRow.letters = currentRow.letters.map(({ letter }, i) => {
-    const indexInSolution = copy.solution.indexOf(letter);
-    let state;
-    if (indexInSolution === -1) {
-      state = 'absent';
-    } else if (indexInSolution === i) {
-      state = 'correct';
-    } else {
-      state = 'present';
+  currentRow.letters = currentRow.letters.map((letter, i) => {
+    const state = guessEvaluations[i];
+    if (state === 'absent' || state === 'present') {
+        copy.keys[letter.letter] = state;
+    } else if (copy.keys[letter.letter] !== 'correct') {
+      // set 'present' only if it isn't 'correct' already
+      copy.keys[letter.letter] = state;
     }
-    copy.keys[letter] = state;
-    return { letter, state };
+
+    return { ...letter, state };
   });
+  if (!guessEvaluations.find(evaluation => evaluation !== 'correct')) {
+    copy.state = 'win';
+  } else if (!copy.tiles.find(tile => tile.revealed === false)) {
+    copy.state = 'lost';
+  }
   return copy;
 }
 

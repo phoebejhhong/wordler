@@ -89,7 +89,7 @@ function Keyboard({ gameState, setGameState }) {
   );
 }
 function App() {
-  const [gameState, setGameState] = useState(getInitialState('delute'));
+  const [gameState, setGameState] = useState(getInitialState('frame'));
   const handleKeyup = useCallback(e => {
     let newState;
     const key = e.key.toLowerCase();
@@ -133,7 +133,7 @@ function App() {
 
   return (
     <div id="game">
-      <header>Wodler</header>
+      <header>{`Wordler is ${gameState.state}`}</header>
       <Board
         tiles={gameState.tiles}
       />
