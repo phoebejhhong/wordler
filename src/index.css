@@ -18,6 +18,18 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
+
+  --tile-bg-tbd-border: var(--oc-gray-6);
+  --tile-bg-correct: var(--oc-green-7);
+  --tile-bg-absent: var(--oc-gray-8);
+  --tile-bg-present: var(--oc-yellow-7);
+  --tile-text-color: white;
+
+  --key-bg: var(--oc-gray-6);
+  --key-bg-correct: var(--oc-green-7);
+  --key-bg-absent: var(--oc-gray-8);
+  --key-bg-present: var(--oc-yellow-7);
+
 }
 
 header {
@@ -47,7 +59,8 @@ header {
 
 
 .tile {
-  border: 1px solid brown;
+  background: var(--tile-bg);
+  color: var(--tile-text-color);
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -56,21 +69,26 @@ header {
   font-weight: bold;
   vertical-align: middle;
   box-sizing: border-box;
-  color: var(--tile-text-color);
   text-transform: uppercase;
   user-select: none;
 }
 
+.tile.tbd {
+  color: black;
+  background: var(--tile-bg-tbd);
+  border: 1px solid var(--tile-bg-tbd-border);
+}
+
 .tile.correct {
-  background: green;
+  background: var(--tile-bg-correct);
 }
 
 .tile.present {
-  background: yellow;
+  background: var(--tile-bg-present);
 }
 
 .tile.absent {
-  background: grey;
+  background: var(--tile-bg-absent);
 }
 
 .keyboard {
@@ -94,7 +112,7 @@ header {
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  background-color: lightgrey;
+  background-color: var(--key-bg);
   color: white;
   flex: 1;
   display: flex;
@@ -108,13 +126,13 @@ header {
 }
 
 .key.correct {
-  background: green;
+  background: var(--key-bg-correct);
 }
 
 .key.present {
-  background: yellow;
+  background: var(--key-bg-present);
 }
 
 .key.absent {
-  background: darkgrey;
+  background: var(--key-bg-absent);
 }

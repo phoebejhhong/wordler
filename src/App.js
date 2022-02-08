@@ -1,3 +1,4 @@
+import './colors.css';
 import './App.css';
 import { useState } from 'react';
 import { getInitialState, appendTile, deleteTile, revealTiles } from './gameState';
