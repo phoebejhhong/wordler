@@ -1,3 +1,5 @@
+import { VALID_WORDS } from './validWords';
+
 // type State = 'tbd' | 'absent' | 'present' | 'correct';
 export const getInitialState = (solution) => ({
   solution,
@@ -68,11 +70,14 @@ export const getInitialState = (solution) => ({
 
 const copyState = (gameState) => {
   return {
-    ...gameState,
+    solution: gameState.solution,
+    keys: { ...gameState.keys },
     tiles: gameState.tiles.map(tile => {
       return {
-        ...tile,
-        letters: [ ...tile.letters],
+        revealed: tile.revealed,
+        letters: tile.letters.map(letter =>{
+          return { ...letter };
+        }),
       };
     }),
   };
@@ -92,7 +97,6 @@ export const appendTile = (gameState, letter) => {
   currentLetters[appendIndex].letter = letter;
   return copy;
 }
-
 
 export const deleteTile = (gameState) => {
   const copy = copyState(gameState);
@@ -119,6 +123,9 @@ export const revealTiles = (gameState) => {
   const copy = copyState(gameState);
   const currentRow = copy.tiles.find(tile => tile.revealed === false);
   if (!currentRow || !!currentRow.letters.find(letter => letter.letter === '')) {
+    return gameState;
+  }
+  if (VALID_WORDS.indexOf(currentRow.letters.map(letter => letter.letter).join('')) === -1) {
     return gameState;
   }
   currentRow.revealed = true;
