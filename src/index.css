@@ -94,7 +94,7 @@ header {
   border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  background-color: #3a3a3c;
+  background-color: lightgrey;
   color: white;
   flex: 1;
   display: flex;
@@ -105,4 +105,16 @@ header {
 
 .special-key {
   flex: 1.5;
+}
+
+.key.correct {
+  background: green;
+}
+
+.key.present {
+  background: yellow;
+}
+
+.key.absent {
+  background: darkgrey;
 }
