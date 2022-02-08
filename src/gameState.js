@@ -75,6 +75,7 @@ export const initialState = {
 const copyState = (gameState) => {
   return {
     solution: gameState.solution,
+    maker: gameState.maker,
     state: gameState.state,
     keys: { ...gameState.keys },
     tiles: gameState.tiles.map(tile => {

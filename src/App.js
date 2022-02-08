@@ -162,7 +162,7 @@ function GameSetup({ gameState, setGameState }) {
            });
          } else {
            setSetupState({
-             generatedUrl: `${document.location.host}#${btoa(JSON.stringify({ solution, maker }))}`,
+             generatedUrl: `${document.location.host}${document.location.pathname}#${btoa(JSON.stringify({ solution, maker }))}`,
            });
          }
       }}>
