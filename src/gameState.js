@@ -126,7 +126,7 @@ export const revealTiles = (gameState) => {
     return gameState;
   }
   if (VALID_WORDS.indexOf(currentRow.letters.map(letter => letter.letter).join('')) === -1) {
-    return gameState;
+    throw new Error('invalid word');
   }
   currentRow.revealed = true;
   currentRow.letters = currentRow.letters.map(({ letter }, i) => {
@@ -142,5 +142,18 @@ export const revealTiles = (gameState) => {
     copy.keys[letter] = state;
     return { letter, state };
   });
+  return copy;
+}
+
+export const setInvalidTiles = (gameState) => {
+  const copy = copyState(gameState);
+  const currentRow = copy.tiles.find(tile => tile.revealed === false);
+  currentRow.invalid = true;
+  return copy;
+}
+export const unsetInvalidTiles = (gameState) => {
+  const copy = copyState(gameState);
+  const currentRow = copy.tiles.find(tile => tile.revealed === false);
+  delete currentRow.invalid;
   return copy;
 }

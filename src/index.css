@@ -24,6 +24,7 @@ body {
   --tile-bg-absent: var(--oc-gray-8);
   --tile-bg-present: var(--oc-yellow-7);
   --tile-text-color: white;
+  --tile-text-color-invalid: var(--oc-red-6);
 
   --key-bg: var(--oc-gray-6);
   --key-bg-correct: var(--oc-green-7);
@@ -77,6 +78,11 @@ header {
   color: black;
   background: var(--tile-bg-tbd);
   border: 1px solid var(--tile-bg-tbd-border);
+  transition: color 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tile.tbd.invalid {
+  color: var(--tile-text-color-invalid);
 }
 
 .tile.correct {

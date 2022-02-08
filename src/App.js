@@ -1,14 +1,14 @@
 import './colors.css';
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
-import { getInitialState, appendTile, deleteTile, revealTiles } from './gameState';
+import { getInitialState, appendTile, deleteTile, revealTiles, setInvalidTiles, unsetInvalidTiles } from './gameState';
 
-function TileRow({ letters }) {
+function TileRow({ letters, invalid }) {
   return (
     <div className="tileRow">
     {letters.map(function (letter, i) {
       return (
-        <div key={i} className={`tile ${letter.state}`}>
+        <div key={i} className={`tile ${letter.state} ${invalid ? 'invalid' : ''}`}>
           {letter.letter}
         </div>
       );
@@ -23,7 +23,7 @@ function Board({ tiles }) {
       <div className="board">
         {tiles.map(function (row, i) {
           return (
-            <TileRow key={i} letters={row.letters} />
+            <TileRow key={i} letters={row.letters} invalid={row.invalid} />
           );
         })}
       </div>
@@ -41,8 +41,20 @@ function LetterKey({ letter, gameState, setGameState }) {
 
 function EnterKey({ gameState, setGameState }) {
   const onClick = () => {
-    const newState = revealTiles(gameState);
-    setGameState(newState);
+    try {
+      const newState = revealTiles(gameState);
+      setGameState(newState);
+      return;
+    } catch(e) {
+      if (e.message === 'invalid word') {
+        let newState = setInvalidTiles(gameState);
+        setGameState(newState);
+        setTimeout(() => {
+          newState = unsetInvalidTiles(newState);
+          setGameState(newState);
+        }, 500);
+      }
+    }
   }
   return (<button className="key special-key" onClick={onClick}>enter</button>);
 }
@@ -82,9 +94,20 @@ function App() {
     let newState;
     const key = e.key.toLowerCase();
     if (key === 'enter') {
-      newState = revealTiles(gameState);
-      setGameState(newState);
-      return;
+      try {
+        newState = revealTiles(gameState);
+        setGameState(newState);
+        return;
+      } catch(e) {
+        if (e.message === 'invalid word') {
+          newState = setInvalidTiles(gameState);
+          setGameState(newState);
+          setTimeout(() => {
+            newState = unsetInvalidTiles(newState);
+            setGameState(newState);
+          }, 500);
+        }
+      }
     }
     if (key === 'backspace' || key === 'delete') {
       newState = deleteTile(gameState);
