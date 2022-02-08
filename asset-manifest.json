@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.css": "/wordler/static/css/main.a44dcc9d.css",
-    "main.js": "/wordler/static/js/main.7fabb0e7.js",
-    "static/js/787.054fc7f5.chunk.js": "/wordler/static/js/787.054fc7f5.chunk.js",
-    "index.html": "/wordler/index.html",
-    "main.a44dcc9d.css.map": "/wordler/static/css/main.a44dcc9d.css.map",
-    "main.7fabb0e7.js.map": "/wordler/static/js/main.7fabb0e7.js.map",
-    "787.054fc7f5.chunk.js.map": "/wordler/static/js/787.054fc7f5.chunk.js.map"
+    "main.css": "/static/css/main.a44dcc9d.css",
+    "main.js": "/static/js/main.7fabb0e7.js",
+    "static/js/787.054fc7f5.chunk.js": "/static/js/787.054fc7f5.chunk.js",
+    "index.html": "/index.html",
+    "main.a44dcc9d.css.map": "/static/css/main.a44dcc9d.css.map",
+    "main.7fabb0e7.js.map": "/static/js/main.7fabb0e7.js.map",
+    "787.054fc7f5.chunk.js.map": "/static/js/787.054fc7f5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a44dcc9d.css",
