@@ -1,11 +1,12 @@
 import { VALID_WORDS } from './validWords';
 
 // type LetterState = 'tbd' | 'absent' | 'present' | 'correct';
-// type GameState = 'progress' | 'lost' | 'win';
+// type GameState = 'notstarted' | 'progress' | 'lost' | 'win';
 
-export const getInitialState = (solution) => ({
-  solution,
-  state: 'progress',
+export const initialState = {
+  solution: undefined,
+  maker: undefined,
+  state: 'notstarted',
   keys: {},
   tiles: [
     {
@@ -69,7 +70,7 @@ export const getInitialState = (solution) => ({
       ],
     },
   ],
-});
+};
 
 const copyState = (gameState) => {
   return {
@@ -85,6 +86,15 @@ const copyState = (gameState) => {
       };
     }),
   };
+}
+
+export const startGame = (gameState, { solution, maker }) => {
+  return {
+    ...copyState(gameState),
+    solution,
+    maker,
+    state: 'progress',
+  }
 }
 
 export const appendTile = (gameState, letter) => {

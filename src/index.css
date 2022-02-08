@@ -11,13 +11,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#game {
+#root {
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 
   --tile-bg-tbd-border: var(--oc-gray-6);
   --tile-bg-correct: var(--oc-green-7);
@@ -35,7 +36,65 @@ body {
 
 header {
   display: flex;
+  font-weight: 700;
+  font-size: 24px;
+  justify-content: center;
 }
+
+.setup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+  flex-direction: column;
+}
+.setup-form {
+  width: 100%;
+}
+.setup-form ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+}
+.setup-form ul li{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.setup-form ul li input {
+  font-size: 24px;
+}
+.setup-form ul li label {
+  text-transform: uppercase;
+}
+.setup-form ul li button {
+  font-weight: bold;
+  border: 0;
+  padding: 0;
+  margin: 0 6px 0 0;
+  height: 58px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: var(--oc-lime-7);
+  color: white;
+}
+
+.setupMessage {
+  background: var(--oc-grape-1);
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.setupMessage.error {
+  background: var(--oc-red-3);
+}
+
 .board-container {
   display: flex;
   justify-content: center;
@@ -57,7 +116,6 @@ header {
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 5px;
 }
-
 
 .tile {
   background: var(--tile-bg);

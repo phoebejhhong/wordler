@@ -1,7 +1,8 @@
 import './colors.css';
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
-import { getInitialState, appendTile, deleteTile, revealTiles, setInvalidTiles, unsetInvalidTiles } from './gameState';
+import { initialState, startGame, appendTile, deleteTile, revealTiles, setInvalidTiles, unsetInvalidTiles } from './gameState';
+import { VALID_WORDS } from './validWords';
 
 function TileRow({ letters, invalid }) {
   return (
@@ -88,8 +89,8 @@ function Keyboard({ gameState, setGameState }) {
     </div>
   );
 }
-function App() {
-  const [gameState, setGameState] = useState(getInitialState('frame'));
+
+function Game({ gameState, setGameState }) {
   const handleKeyup = useCallback(e => {
     let newState;
     const key = e.key.toLowerCase();
@@ -132,14 +133,95 @@ function App() {
   }, [handleKeyup]);
 
   return (
-    <div id="game">
-      <header>{`Wordler is ${gameState.state}`}</header>
+    <>
       <Board
         tiles={gameState.tiles}
       />
       <Keyboard gameState={gameState} setGameState={setGameState} />
-    </div>
+    </>
   );
+}
+
+function GameSetup({ gameState, setGameState }) {
+  const [setupState, setSetupState] = useState({
+    errorMessage: undefined,
+    generatedUrl: undefined,
+  });
+
+  return (
+    <main className="setup-container">
+      <form
+        className="setup-form"
+        onSubmit={(e) => {
+         e.preventDefault();
+         const maker = e.target.elements.maker.value;
+         const solution = e.target.elements.solution.value;
+         if (VALID_WORDS.indexOf(solution) === -1) {
+           setSetupState({
+             errorMessage: 'Invalid word'
+           });
+         } else {
+           setSetupState({
+             generatedUrl: `${document.location.host}#${btoa(JSON.stringify({ solution, maker }))}`,
+           });
+         }
+      }}>
+      <ul>
+        <li>
+          <label htmlFor="maker">Your Name:</label>
+          <input type="text" id="maker" name="maker" />
+        </li>
+        <li>
+          <label htmlFor="solution">A 5-letter word of your choice:</label>
+          <input type="text" id="solution" name="solution" />
+        </li>
+        <li>
+          <button type="submit">Make your own game</button>
+        </li>
+       </ul>
+      </form>
+      <div className={`setupMessage ${setupState.errorMessage ? 'error' : ''}`}>
+        {setupState.generatedUrl || setupState.errorMessage || '☕️ waiting for input'}
+      </div>
+    </main>
+  );
+}
+
+const parseParams = () => {
+  const hash = document.location.hash.substring(1);
+  if (hash) {
+    try {
+      const params = JSON.parse(atob(hash));
+      if (params.solution) {
+        return params;
+      }
+    } catch(e) {}
+  }
+}
+
+function App() {
+  const [gameState, setGameState] = useState(initialState);
+  if (gameState.state === 'notstarted') {
+    const setupFromParams = parseParams();
+    if (setupFromParams) {
+      const newState = startGame(gameState, setupFromParams);
+      setGameState(newState);
+    }
+  }
+  let header = "Wordler: Make Custom Wordles";
+  if (gameState.state !== 'notstarted') {
+    header = `Custom Wordle made by ${gameState.maker || 'anonymous'}`
+  }
+  return (
+    <>
+      <header>{header}</header>
+      {gameState.state === 'notstarted'
+       ? <GameSetup gameState={gameState} setGameState={setGameState} />
+       : <Game gameState={gameState} setGameState={setGameState} />}
+    </>
+  );
+
+
 }
 
 export default App;

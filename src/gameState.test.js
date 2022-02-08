@@ -1,10 +1,10 @@
-import { getInitialState, appendTile, deleteTile, revealTiles } from './gameState';
+import { initialState, appendTile, deleteTile, revealTiles } from './gameState';
 
 describe('gameState', () => {
   describe('appendTile', () => {
     it('appends tile', () => {
       const state = {
-        ...getInitialState(''),
+        ...initialState,
         tiles: [
           { revealed: true, letters: [
             { letter: 'a', state: 'absent'},
@@ -30,7 +30,7 @@ describe('gameState', () => {
         ],
       };
       const stateAfter = {
-        ...getInitialState(''),
+        ...initialState,
         tiles: [
           { revealed: true, letters: [
             { letter: 'a', state: 'absent'},
@@ -60,7 +60,7 @@ describe('gameState', () => {
     });
     it('does not append if full', () => {
       const state = {
-        ...getInitialState(''),
+        ...initialState,
         tiles: [
          { revealed: false, letters: [
            { letter: 'a', state: 'absent'},
@@ -85,7 +85,7 @@ describe('gameState', () => {
   describe('deleteTile', () => {
     it('deletes last letter', () => {
       const state = {
-        ...getInitialState(''),
+        ...initialState,
         tiles: [
          { revealed: true, letters: [
            { letter: 'a', state: 'absent'},
@@ -105,7 +105,7 @@ describe('gameState', () => {
       };
 
       const stateAfter = {
-        ...getInitialState(''),
+        ...initialState,
         tiles: [
          { revealed: true, letters: [
            { letter: 'a', state: 'absent'},
