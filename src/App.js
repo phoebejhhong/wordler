@@ -185,7 +185,7 @@ function GameSetup({ gameState, setGameState }) {
       }}>
       <ul>
         <li>
-          <label htmlFor="maker">Your Name:</label>
+          <label htmlFor="maker">Your Name (optional):</label>
           <input type="text" id="maker" name="maker" />
         </li>
         <li>
@@ -210,7 +210,7 @@ function GameSetup({ gameState, setGameState }) {
               <button className="generatedLinkAction" onClick={() => {
                 navigator.clipboard && navigator.clipboard.writeText(setupState.generatedUrl);
               }}>Copy Link</button>
-              <a className="generatedLinkAction" href={setupState.generatedUrl}>Go to Link</a>
+              <a className="generatedLinkAction" href={setupState.generatedUrl} target="_blank">Open link in new tab</a>
             </div>
         </div>
       )}
