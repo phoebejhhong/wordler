@@ -179,7 +179,7 @@ function GameSetup({ gameState, setGameState }) {
            });
          } else {
            setSetupState({
-             generatedUrl: `${document.location.protocol}${document.location.host}${document.location.pathname}#${btoa(JSON.stringify({ solution, maker }))}`,
+             generatedUrl: `${document.location.origin}${document.location.pathname}#${btoa(JSON.stringify({ solution, maker }))}`,
            });
          }
       }}>
