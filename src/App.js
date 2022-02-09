@@ -165,13 +165,21 @@ function GameSetup({ gameState, setGameState }) {
          e.preventDefault();
          const maker = e.target.elements.maker.value;
          const solution = e.target.elements.solution.value;
-         if (VALID_WORDS.indexOf(solution) === -1) {
+         if (solution.length > 6) {
            setSetupState({
-             errorMessage: 'Invalid word'
+             errorMessage: 'The word is too long.'
+           });
+         } else if (solution.length < 4) {
+           setSetupState({
+             errorMessage: 'The word is too short.'
+           });
+         } else if (VALID_WORDS.indexOf(solution) === -1) {
+           setSetupState({
+             errorMessage: 'The word was not found in the dictionary.'
            });
          } else {
            setSetupState({
-             generatedUrl: `${document.location.host}${document.location.pathname}#${btoa(JSON.stringify({ solution, maker }))}`,
+             generatedUrl: `${document.location.protocol}${document.location.host}${document.location.pathname}#${btoa(JSON.stringify({ solution, maker }))}`,
            });
          }
       }}>
@@ -189,9 +197,23 @@ function GameSetup({ gameState, setGameState }) {
         </li>
        </ul>
       </form>
-      <div className={`setupMessage ${setupState.errorMessage ? 'error' : ''}`}>
-        {setupState.generatedUrl || setupState.errorMessage || '☕️ waiting for input'}
-      </div>
+      {setupState.errorMessage && (
+        <div className="setupMessage error">
+          🙅 {setupState.errorMessage}
+        </div>
+      )}
+      {setupState.generatedUrl && (
+        <div className="setupMessage generatedUrl">
+          🔗 Link generated!
+            <input type="text" value={setupState.generatedUrl} />
+            <div>
+              <button className="generatedLinkAction" onClick={() => {
+                navigator.clipboard && navigator.clipboard.writeText(setupState.generatedUrl);
+              }}>Copy Link</button>
+              <a className="generatedLinkAction" href={setupState.generatedUrl}>Go to Link</a>
+            </div>
+        </div>
+      )}
     </main>
   );
 }

@@ -48,6 +48,8 @@ header {
   flex-grow: 1;
   overflow: hidden;
   flex-direction: column;
+  padding: 0 12px;
+  box-sizing: border-box;
 }
 .setup-form {
   width: 100%;
@@ -76,11 +78,14 @@ header {
   padding: 0;
   margin: 0 6px 0 0;
   height: 58px;
-  border-radius: 4px;
+  border-radius: 16px;
   cursor: pointer;
   text-transform: uppercase;
   background: var(--oc-lime-7);
   color: white;
+}
+.setup-form ul li button:hover {
+  background: var(--oc-lime-8);
 }
 
 .setupMessage {
@@ -89,10 +94,41 @@ header {
   border-radius: 12px;
   padding: 12px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .setupMessage.error {
   background: var(--oc-red-3);
+}
+.generatedUrl input {
+  background: transparent;
+  text-shadow: none;
+  border-width: 0;
+  padding: 3px;
+  flex-grow: 1;
+}
+
+.generatedUrl > div {
+  display: flex;
+  gap: 6px;
+}
+
+.generatedLinkAction {
+  border: 0;
+  padding: 5px 10px;
+  margin: 0;
+  cursor: pointer;
+  background: var(--oc-gray-2);
+  text-transform: uppercase;
+  border-radius: 6px;
+  color: black;
+  text-decoration: none;
+  font-size: 1em;
+}
+.generatedLinkAction:hover {
+  background: var(--oc-gray-3);
 }
 
 .board-container {

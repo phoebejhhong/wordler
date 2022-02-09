@@ -22,7 +22,7 @@ export const ShareModal = ({ isOpen, onClose, gameState }) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <h2>You won!</h2>
       <button className="shareButton" onClick={() => {
-        navigator.clipboard.writeText(shareContent);
+        navigator.clipboard && navigator.clipboard.writeText(shareContent);
       }}>Share 🤗</button>
     </Modal>
   )
