@@ -169,3 +169,14 @@ export const unsetInvalidTiles = (gameState) => {
   delete currentRow.invalid;
   return copy;
 }
+
+const letterStateToEmoji = {
+  'correct': '🟩',
+  'present': '🟨',
+  'absent': '⬜️',
+}
+export const generateSharableTiles = (tiles) => {
+  return tiles.filter(tile => tile.revealed).map(tile => (
+    tile.letters.map(letter => letterStateToEmoji[letter.state]).join('')
+  )).join(`\n`);
+}

@@ -1,6 +1,7 @@
 import './colors.css';
 import { useState, useEffect, useCallback } from 'react';
 import { initialState, startGame, appendTile, deleteTile, revealTiles, setInvalidTiles, unsetInvalidTiles } from './gameState';
+import { ShareModal } from './Modal';
 import { VALID_WORDS } from './validWords';
 
 function TileRow({ letters, invalid }) {
@@ -90,6 +91,8 @@ function Keyboard({ gameState, setGameState }) {
 }
 
 function Game({ gameState, setGameState }) {
+  const [shareModalOpen, setShareModalOpen] = useState(false);
+
   const handleKeyup = useCallback(e => {
     let newState;
     const key = e.key.toLowerCase();
@@ -131,12 +134,19 @@ function Game({ gameState, setGameState }) {
     }
   }, [handleKeyup]);
 
+  useEffect(() => {
+    if (gameState.state === 'win') {
+      setShareModalOpen(true);
+    }
+  }, [gameState.state]);
+
   return (
     <>
       <Board
         tiles={gameState.tiles}
       />
       <Keyboard gameState={gameState} setGameState={setGameState} />
+      <ShareModal isOpen={shareModalOpen} onClose={() => setShareModalOpen(false)} gameState={gameState} />
     </>
   );
 }

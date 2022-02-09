@@ -1,4 +1,4 @@
-import { initialState, appendTile, deleteTile, revealTiles } from './gameState';
+import { initialState, appendTile, deleteTile, revealTiles, generateSharableTiles } from './gameState';
 
 describe('gameState', () => {
   describe('appendTile', () => {
@@ -89,6 +89,7 @@ describe('gameState', () => {
     it('deletes last letter', () => {
       const state = {
         ...initialState,
+        solution: 'jjjjj',
         state: 'progress',
         tiles: [
          { revealed: true, letters: [
@@ -110,6 +111,7 @@ describe('gameState', () => {
 
       const stateAfter = {
         ...initialState,
+        solution: 'jjjjj',
         state: 'progress',
         tiles: [
          { revealed: true, letters: [
@@ -214,4 +216,31 @@ describe('gameState', () => {
       expect(revealTiles(state)).toEqual(stateAfter);
     });
   });
+  describe('generateSharableTiles', () => {
+    it('generates emoji tiles', () => {
+      const tiles = [
+        {revealed: true, letters: [
+          { letter: 'a', state: 'correct'},
+          { letter: 'a', state: 'present'},
+          { letter: 'a', state: 'absent'},
+          { letter: 'a', state: 'absent'},
+        ]},
+        {revealed: true, letters: [
+          { letter: 'a', state: 'absent'},
+          { letter: 'a', state: 'present'},
+          { letter: 'a', state: 'absent'},
+          { letter: 'a', state: 'present'},
+        ]},
+        {revealed: false, letters: [
+          { letter: 'a', state: 'absent'},
+          { letter: 'a', state: 'present'},
+          { letter: 'a', state: 'absent'},
+          { letter: 'a', state: 'present'},
+        ]},
+      ];
+      const emojiTiles = `🟩🟨⬜️⬜️\n⬜️🟨⬜️🟨`;
+
+      expect(generateSharableTiles(tiles)).toEqual(emojiTiles);
+    })
+  })
 });
