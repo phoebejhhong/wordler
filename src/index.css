@@ -107,12 +107,10 @@ header {
   grid-gap: 5px;
   grid-template-rows: repeat(6, 1fr);
   margin: auto;
-  width: 70%;
 }
 
 .tileRow {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
   grid-gap: 5px;
 }
 

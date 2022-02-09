@@ -1,12 +1,11 @@
 import './colors.css';
-import './App.css';
 import { useState, useEffect, useCallback } from 'react';
 import { initialState, startGame, appendTile, deleteTile, revealTiles, setInvalidTiles, unsetInvalidTiles } from './gameState';
 import { VALID_WORDS } from './validWords';
 
 function TileRow({ letters, invalid }) {
   return (
-    <div className="tileRow">
+    <div className="tileRow" style={{ gridTemplateColumns: `repeat(${letters.length}, 1fr)`}}>
     {letters.map(function (letter, i) {
       return (
         <div key={i} className={`tile ${letter.state} ${invalid ? 'invalid' : ''}`}>
@@ -21,7 +20,7 @@ function TileRow({ letters, invalid }) {
 function Board({ tiles }) {
   return (
     <div className="board-container">
-      <div className="board">
+      <div className="board" style={{ width: tiles[0].letters.length > 4 ? '70%' : '60%' }}>
         {tiles.map(function (row, i) {
           return (
             <TileRow key={i} letters={row.letters} invalid={row.invalid} />
@@ -172,7 +171,7 @@ function GameSetup({ gameState, setGameState }) {
           <input type="text" id="maker" name="maker" />
         </li>
         <li>
-          <label htmlFor="solution">A 5-letter word of your choice:</label>
+          <label htmlFor="solution">4-to-6-letter-word of your choice:</label>
           <input type="text" id="solution" name="solution" />
         </li>
         <li>
@@ -192,7 +191,7 @@ const parseParams = () => {
   if (hash) {
     try {
       const params = JSON.parse(atob(hash));
-      if (params.solution) {
+      if (params.solution && VALID_WORDS.indexOf(params.solution) > -1) {
         return params;
       }
     } catch(e) {}

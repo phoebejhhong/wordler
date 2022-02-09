@@ -42,6 +42,7 @@ export const startGame = (gameState, { solution, maker }) => {
     solution,
     maker,
     state: 'progress',
+    tiles: generateEmptyTiles(solution.length),
   }
 }
 
@@ -74,7 +75,7 @@ export const deleteTile = (gameState) => {
   }
   const currentLetters = currentRow.letters;
   let deleteIndex = -1
-  for (let i = 4; i > -1; i--) {
+  for (let i = copy.solution.length - 1; i > -1; i--) {
     if (currentLetters[i].letter !== '') {
       deleteIndex = i;
       break;
