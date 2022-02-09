@@ -3,73 +3,20 @@ import { VALID_WORDS } from './validWords';
 // type LetterState = 'tbd' | 'absent' | 'present' | 'correct';
 // type GameState = 'notstarted' | 'progress' | 'lost' | 'win';
 
+const generateEmptyTiles = (wordLength) => {
+  return Array(6).fill({
+    revealed : false,
+    letters: Array(wordLength).fill({
+        letter: '', state: 'tbd',
+    }),
+  });
+}
 export const initialState = {
   solution: undefined,
   maker: undefined,
   state: 'notstarted',
   keys: {},
-  tiles: [
-    {
-      revealed : false,
-      letters: [
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-      ],
-    },
-    {
-      revealed : false,
-      letters: [
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-      ],
-    },
-    {
-      revealed : false,
-      letters: [
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-      ],
-    },
-    {
-      revealed : false,
-      letters: [
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-      ],
-    },
-    {
-      revealed : false,
-      letters: [
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-      ],
-    },
-    {
-      revealed : false,
-      letters: [
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-        { letter: '', state: 'tbd'},
-      ],
-    },
-  ],
+  tiles: generateEmptyTiles(5),
 };
 
 const copyState = (gameState) => {

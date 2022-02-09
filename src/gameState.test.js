@@ -5,6 +5,7 @@ describe('gameState', () => {
     it('appends tile', () => {
       const state = {
         ...initialState,
+        state: 'progress',
         tiles: [
           { revealed: true, letters: [
             { letter: 'a', state: 'absent'},
@@ -31,6 +32,7 @@ describe('gameState', () => {
       };
       const stateAfter = {
         ...initialState,
+        state: 'progress',
         tiles: [
           { revealed: true, letters: [
             { letter: 'a', state: 'absent'},
@@ -61,6 +63,7 @@ describe('gameState', () => {
     it('does not append if full', () => {
       const state = {
         ...initialState,
+        state: 'progress',
         tiles: [
          { revealed: false, letters: [
            { letter: 'a', state: 'absent'},
@@ -86,6 +89,7 @@ describe('gameState', () => {
     it('deletes last letter', () => {
       const state = {
         ...initialState,
+        state: 'progress',
         tiles: [
          { revealed: true, letters: [
            { letter: 'a', state: 'absent'},
@@ -106,6 +110,7 @@ describe('gameState', () => {
 
       const stateAfter = {
         ...initialState,
+        state: 'progress',
         tiles: [
          { revealed: true, letters: [
            { letter: 'a', state: 'absent'},
@@ -130,8 +135,9 @@ describe('gameState', () => {
   describe('revealTiles', () => {
     it('reveal and evalutates tiles', () => {
       const state = {
+        ...initialState,
+        state: 'progress',
         solution: 'frame',
-        keys: {},
         tiles: [
           { revealed: false, letters: [
             { letter: 'm', state: 'tbd'},
@@ -144,6 +150,8 @@ describe('gameState', () => {
       };
 
       const stateAfter = {
+        ...initialState,
+        state: 'lost',
         solution: 'frame',
         keys: {
           m: 'present',
@@ -164,43 +172,46 @@ describe('gameState', () => {
       };
 
       expect(revealTiles(state)).toEqual(stateAfter);
-    })
-  });
-  it('edge case with duplicate guess', () => {
-    const state = {
-      solution: 'frame',
-      keys: {},
-      tiles: [
-        { revealed: false, letters: [
-          { letter: 'm', state: 'tbd'},
-          { letter: 'a', state: 'tbd'},
-          { letter: 'i', state: 'tbd'},
-          { letter: 'm', state: 'tbd'},
-          { letter: 's', state: 'tbd'},
-        ]},
-      ],
-    };
+    });
+    it('edge case with duplicate guess', () => {
+      const state = {
+        ...initialState,
+        state: 'progress',
+        solution: 'frame',
+        tiles: [
+          { revealed: false, letters: [
+            { letter: 'm', state: 'tbd'},
+            { letter: 'a', state: 'tbd'},
+            { letter: 'i', state: 'tbd'},
+            { letter: 'm', state: 'tbd'},
+            { letter: 's', state: 'tbd'},
+          ]},
+        ],
+      };
 
-    const stateAfter = {
-      solution: 'frame',
-      keys: {
-        m: 'absent',
-        a: 'present',
-        i: 'absent',
-        m: 'correct',
-        s: 'absent',
-      },
-      tiles: [
-        { revealed: true, letters: [
-          { letter: 'm', state: 'absent'}, // absent because correct m exists
-          { letter: 'a', state: 'present'},
-          { letter: 'i', state: 'absent'},
-          { letter: 'm', state: 'correct'},
-          { letter: 's', state: 'absent'},
-        ]},
-      ],
-    };
+      const stateAfter = {
+        ...initialState,
+        state: 'lost',
+        solution: 'frame',
+        keys: {
+          m: 'absent',
+          a: 'present',
+          i: 'absent',
+          m: 'correct',
+          s: 'absent',
+        },
+        tiles: [
+          { revealed: true, letters: [
+            { letter: 'm', state: 'absent'}, // absent because correct m exists
+            { letter: 'a', state: 'present'},
+            { letter: 'i', state: 'absent'},
+            { letter: 'm', state: 'correct'},
+            { letter: 's', state: 'absent'},
+          ]},
+        ],
+      };
 
-    expect(revealTiles(state)).toEqual(stateAfter);
+      expect(revealTiles(state)).toEqual(stateAfter);
+    });
   });
 });
