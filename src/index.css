@@ -107,8 +107,7 @@ header {
   grid-gap: 5px;
   grid-template-rows: repeat(6, 1fr);
   margin: auto;
-  width: 350px;
-  height: 420px;
+  width: 70%;
 }
 
 .tileRow {
@@ -130,6 +129,7 @@ header {
   box-sizing: border-box;
   text-transform: uppercase;
   user-select: none;
+  aspect-ratio: 1;
 }
 
 .tile.tbd {
