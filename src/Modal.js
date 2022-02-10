@@ -17,13 +17,21 @@ export const ShareModal = ({ isOpen, onClose, gameState }) => {
   const sharableTiles = generateSharableTiles(gameState.tiles);
   const attemptCount = gameState.tiles.filter(tile => tile.revealed).length;
   const shareContent =
-  `Wordlr ${attemptCount}/6\n${sharableTiles}\n\nPlay at ${document.location.href}`;
+  `Wordler ${attemptCount}/6\n${sharableTiles}\n\nPlay at ${document.location.href}`;
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <h2>You won!</h2>
-      <button className="shareButton" onClick={() => {
-        navigator.clipboard && navigator.clipboard.writeText(shareContent);
-      }}>Share 🤗</button>
+      {navigator.share
+        ? (<button className="shareButton" onClick={() => {
+           navigator.share({
+            text: shareContent,
+           });
+        }}>Share 🤗</button>)
+      : (
+        <button className="shareButton" onClick={() => {
+          navigator.clipboard && navigator.clipboard.writeText(shareContent);
+        }}>Copy result 🤗</button>
+      )}
     </Modal>
   )
 }

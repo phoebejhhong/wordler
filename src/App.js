@@ -164,7 +164,7 @@ function GameSetup({ gameState, setGameState }) {
         onSubmit={(e) => {
          e.preventDefault();
          const maker = e.target.elements.maker.value;
-         const solution = e.target.elements.solution.value;
+         const solution = e.target.elements.solution.value.toLowerCase();
          if (solution.length > 6) {
            setSetupState({
              errorMessage: 'The word is too long.'

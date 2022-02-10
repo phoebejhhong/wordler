@@ -40,6 +40,10 @@
   cursor: pointer;
 }
 
+.closeButton:hover {
+  color: var(--oc-gray-8);
+}
+
 
 .body {
   background: white;
@@ -62,4 +66,8 @@
   font-weight: 800;
   font-size: 24px;
   cursor: pointer;
+}
+
+.shareButton:hover {
+  background: var(--oc-green-8);
 }
